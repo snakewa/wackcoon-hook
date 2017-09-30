@@ -22,7 +22,7 @@ app.post('/stua/beleg', function (req, res) {
 	console.log(req.body.pusher.name + ' just pushed to ' + req.body.repository.name);
   if(req.body.pusher.name === 'Splashcom' && req.body.repository.name === 'studienarbeit-beleg') {
     console.log('pulling code from GitHub...');
-    exec('git -C ~/git/studienarbeit-beleg pull -f', execCallback);
+    exec('git -C ~/git/studienarbeit-beleg pull', execCallback);
   } else {
     console.log('No Splashcom or wrong repo, no pull!')
   }
