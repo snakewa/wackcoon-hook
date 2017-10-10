@@ -17,8 +17,7 @@ app.get('/stua', function (req, res) {
 });
 
 app.post('/stua/beleg', function (req, res) {
-	//verify that the payload is a push from the correct repo
-	//verify repository.name == 'wackcoon-device' or repository.full_name = 'DanielEgan/wackcoon-device'
+	console.log('#----' + req.body.head_commit.timestamp + '----#');
 	console.log(req.body.pusher.name + ' just pushed to ' + req.body.repository.name);
   if(req.body.pusher.name === 'Splashcom' && req.body.repository.name === 'studienarbeit-beleg') {
     console.log('pulling code from GitHub...');
