@@ -34,12 +34,15 @@ app.post('/stua/project', function (req, res) {
 	console.log(req.body.pusher.name + ' just pushed to ' + req.body.repository.name);
   if(req.body.pusher.name === 'Splashcom' && req.body.repository.name === 'studienarbeit-project') {
     console.log('pulling code from GitHub...');
+    exec('cd ..', execCallback);
+    exec('cd ..', execCallback)
     exec('git -C ~/media/usb1/git/studienarbeit-project pull', execCallback);
+    exec('cd home/hodor', execCallback)
   } else {
     console.log('No Splashcom or wrong repo, no pull!')
   }
-  res.sendStatus(200);
-  res.end();
+	res.sendStatus(200);
+	res.end();
 });
 
 app.listen(5029, function () {
@@ -47,6 +50,7 @@ app.listen(5029, function () {
 });
 
 function execCallback(err, stdout, stderr) {
+	if (err) console.log(err);
 	if (stdout) console.log(stdout);
 	if (stderr) console.log(stderr);
 }
