@@ -48,6 +48,7 @@ app.post('/diplom/beleg', function (req, res) {
   if(req.body.pusher.name === 'Splashcom' && req.body.repository.name === 'diplomarbeit-beleg') {
     console.log('pulling code from GitHub...');
     exec('git -C /media/usb1/git/diplomarbeit-beleg pull', execCallback);
+    exec("ssh -p 3724 lilly@192.168.0.102 '~/scripts/da_provider.sh'", execCallback);
   } else {
     console.log('No Splashcom or wrong repo, no pull!');
   }
