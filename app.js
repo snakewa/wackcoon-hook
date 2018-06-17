@@ -17,14 +17,20 @@ app.get('/payload', function (req, res) {
 });
 
 app.post('/payload', function (req, res) {
-    console.log('#----' + req.body.head_commit.timestamp + '----#');
-    console.log(req.body.pusher.name + ' just pushed to ' + req.body.repository.name);
+    if (req.body.head_commit) {
+        console.log('#----' + req.body.head_commit.timestamp + '----#');
+    }
+    if (req.body.pusher && req.body.repository) {
+        console.log(req.body.pusher.name + ' just pushed to ' + req.body.repository.name);
+    }
+
     // if(req.body.pusher.name === 'Splashcom' && req.body.repository.name === 'studienarbeit-beleg') {
     //   console.log('pulling code from GitHub...');
     //   exec('git -C ~/git/studienarbeit-beleg pull', execCallback);
     // } else {
     //   console.log('No Splashcom or wrong repo, no pull!');
     // }
+
     res.sendStatus(200);
     res.end();
 });
