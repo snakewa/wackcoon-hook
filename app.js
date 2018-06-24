@@ -6,7 +6,6 @@ var execSync = require('child_process').execSync;
 var localtunnel = require('localtunnel');
 
 var port = process.env.PORT || 5000;
-var projectRoot = process.env.PROJECT_ROOT;
 var tunnelSubdomain = process.env.TUNNEL_SUBDOMAIN;
 
 var deployHardReset = process.env.DEPLOY_HARD_RESET || false;
@@ -32,19 +31,32 @@ app.get('/', function (req, res) {
 	res.end();
 });
 
-//navigating to /deploy should initiate the deployment
-app.get('/deploy', function (req, res) {
-    deploy();
+
+app.get('/deploy/:project*?', function (req, res) {
+    let project = req.params.project ;
+    if(project){
+        project = `PROJECT_ROOT_${project}`.toUpperCase()
+        project = process.env[project]
+    }else{
+        project = process.env.PROJECT_ROOT;
+    }    
+    deploy(project);
 	res.send('deployment triggered');
 	res.end();
 });
 
-//this is the primary route used by a GitHub hook
-app.post('/deploy', function (req, res) {
+app.post('/deploy/:project*?', function (req, res) {
     let pusher = req.body.pusher.name || req.body.user_name;
 	console.log( pusher + ' just pushed to ' + req.body.repository.name);
     console.log('deploying...');
-    deploy();
+    let project = req.params.project ;
+    if(project){
+        project = `PROJECT_ROOT_${project}`.toUpperCase()
+        project = process.env[project]
+    }else{
+        project = process.env.PROJECT_ROOT;
+    } 
+    deploy(project);
 	res.sendStatus(200);
     res.end();
 });
@@ -65,7 +77,7 @@ function setupLocalTunnel() {
 }
 
 
-function deploy() {
+function deploy(projectRoot) {
 
     // reset any changes that have been made locally
     if(deployHardReset){        
