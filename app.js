@@ -46,6 +46,7 @@ app.get('/deploy/:project*?', function (req, res) {
 });
 
 app.post('/deploy/:project*?', function (req, res) {
+    console.log(req.body);
     let pusher = req.body.sender.login || req.body.user_name;
 	console.log( pusher + ' just pushed to ' + req.body.repository.name);
     console.log('deploying...');
