@@ -46,9 +46,18 @@ app.get('/deploy/:project*?', function (req, res) {
 });
 
 app.post('/deploy/:project*?', function (req, res) {
-    console.log(req.body);
-    let pusher = req.body.sender.login || req.body.user_name;
-	console.log( pusher + ' just pushed to ' + req.body.repository.name);
+    let payload , pusher, repo_name;
+    if(req.body.payload){
+        //github
+        payload = JSON.parse(req.body.payload);
+        pusher = payload.sender.login ;
+    }else{
+        //gitlab
+        payload = JSON.parse(req.body);
+        pusher = payload.user_name;
+    }
+    repo_name = payload.repository.name;
+	console.log( pusher + ' just pushed to ' + repo_name);
     console.log('deploying...');
     let project = req.params.project ;
     if(project){
